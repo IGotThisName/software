@@ -6,6 +6,6 @@
 <h1>Documents</h1>
 <ul>
   {#each data.titles as title}
-    <ul><a href={'/document/' + title}>title</a></ul>
+    <ul><a href={'/document/' + title}>{title}</a></ul>
   {/each}
 </ul>
