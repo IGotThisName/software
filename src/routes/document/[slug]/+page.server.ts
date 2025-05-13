@@ -5,6 +5,8 @@ import type { PageServerLoad } from './$types.js';
 export const load: PageServerLoad = async ({ params }) => {
   const { data, error } = await supabase.from("documents").select().eq('title', params.slug);
 
+  error ?? console.log(error);
+
   if (data) {
     const document = data[0];
 
@@ -24,13 +26,13 @@ export const actions = {
     const md = formData.get('input');
     const title = formData.get('title');
 
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('documents')
       .update({ content: md })
       .eq('title', title)
       .select();
 
-    console.log(data);
+    error ?? console.log(error);
 
     return { success: true };
 	}
