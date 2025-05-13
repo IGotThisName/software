@@ -1,7 +1,7 @@
 import { supabase } from '$lib/supabaseClient.js';
 import type { PageServerLoad } from './$types.js';
 
-// load the file
+// get md from database
 export const load: PageServerLoad = async ({ params }) => {
   const { data, error } = await supabase.from("documents").select().eq('title', params.slug);
 
@@ -19,7 +19,7 @@ export const load: PageServerLoad = async ({ params }) => {
   return ({});
 }
 
-// upload markdown
+// upload markdown to database
 export const actions = {
 	default: async ({ request }:{ request:Request }) => {
 		const formData = await request.formData();
