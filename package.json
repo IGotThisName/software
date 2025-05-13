@@ -48,6 +48,7 @@
 		"svelte"
 	],
 	"dependencies": {
+		"@supabase/supabase-js": "^2.49.4",
 		"@vercel/blob": "^1.0.0",
 		"svelte-exmarkdown": "^5.0.1"
 	}

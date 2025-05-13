@@ -1,30 +1,21 @@
 <script>
-// @ts-nocheck
-
+  // @ts-nocheck
+  
+  import { enhance } from '$app/forms';
+  import { updated } from '$app/state';
 	import Markdown from 'svelte-exmarkdown';
 
-  let md = $state("loading...")
+  const data = $props();
 
-	async function fetchData() {
-    const res = await fetch("/api");
-
-    if (res.ok) {
-      const json = await res.json();
-      console.log(json);
-
-      md = json.markdown;
-    }
-    else {
-      return new Error("Fetch error");
-    }
-	}
+  let md = $state(data.data.content);
+  
 </script>
 
-{#await fetchData()}
-<p>Loading...</p>
-{:then}
-
-<form action="POST">
+<form method="POST" use:enhance={() => {
+  return async ({ result, update }) => {
+    update({ reset: false })
+	};
+}}>
     <div class="flex flex-row h-screen w-screen">
     <textarea 
         bind:value={md}
@@ -46,4 +37,3 @@
     </div>
 </form>
 
-{/await}
