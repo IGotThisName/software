@@ -3,10 +3,10 @@ import type { PageServerLoad } from './$types.js';
 
 // load the file
 export const load: PageServerLoad = async ({ params }) => {
-  const { data, error } = await supabase.from("documents").select();
+  const { data, error } = await supabase.from("documents").select().eq('title', params.slug);
 
   if (data) {
-    const document = data.find(element => element.title === params.slug);
+    const document = data[0];
 
     return ({
       title: document.title,
