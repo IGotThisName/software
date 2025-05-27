@@ -3,7 +3,7 @@
   const data = props.data;
 </script>
 
-<div>
+<div class="p-4">
   <h1 class="text-xl mb-2">Documents</h1>
   <ul class="ml-2 text-lg">
     {#each data.titles as title}

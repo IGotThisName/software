@@ -48,6 +48,8 @@
 		"svelte"
 	],
 	"dependencies": {
+		"@oslojs/crypto": "^1.0.1",
+		"@oslojs/encoding": "^1.1.0",
 		"@supabase/supabase-js": "^2.49.4",
 		"@vercel/blob": "^1.0.0",
 		"svelte-exmarkdown": "^5.0.1"

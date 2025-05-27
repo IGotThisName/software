@@ -13,7 +13,7 @@
 </script>
 
 <form method="POST" use:enhance={({ formData }) => {
-  formData.append('title', data.title)
+  formData.append('title', data.title);
 
   return async ({ result, update }) => {
     update({ reset: false })
