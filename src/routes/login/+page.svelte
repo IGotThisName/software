@@ -1,3 +1,17 @@
-<div class="w-screen h-screen flex justify-center items-center">
-  <h1 class="text-xl">ur not logged in</h1>
-</div>
+<script lang="ts">
+  const props = $props();
+  const data = props.data;
+</script>
+
+<form method="POST" action="?/login">
+  <label>
+    Email
+    <input name="email" type="email">
+  </label>
+  <label>
+    Password
+    <input name="password" type="password">
+  </label>
+  <button>Log in</button>
+  <a href='/sign-up'>Sign up</a>
+</form>

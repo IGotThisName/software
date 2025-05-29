@@ -1,7 +1,13 @@
 import { supabase } from "$lib/supabaseClient.js";
+import { redirect } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types.js";
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async ({ locals }) => {
+
+  if (locals.user === null) {
+    return redirect(308, "/login");
+  }
+
   const { data, error } = await supabase.from('documents').select();
 
   error ?? console.log(error);
@@ -12,8 +18,8 @@ export const load: PageServerLoad = async () => {
       titles.push(document.title);
     })
 
-    return ({ titles })
+    return ({ titles, user: locals.user })
   }
 
-  return ({ })
+  return ({ user: locals.user })
 }

@@ -4,7 +4,7 @@ import type { PageServerLoad } from './$types.js';
 
 // get md from database
 export const load: PageServerLoad = async ({ locals, params }) => {
-  console.log(locals.user)
+
   if (locals.user === null) {
 		return redirect(308, "/login");
 	}
@@ -19,10 +19,11 @@ export const load: PageServerLoad = async ({ locals, params }) => {
     return ({
       title: document.title,
       content: document.content,
+      user: locals.user
     })
   }
   
-  return ({});
+  return ({ user: locals.user });
 }
 
 // upload markdown to database

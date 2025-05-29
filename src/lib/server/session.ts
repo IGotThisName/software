@@ -13,6 +13,7 @@ export function generateSessionToken(): string {
 
 // creates a new session storing the token, id and expiration
 export async function createSession(token: string, userId: number): Promise<Session> {
+
 	const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
 	const session: Session = {
 		id: sessionId,
@@ -30,9 +31,10 @@ export async function createSession(token: string, userId: number): Promise<Sess
 export async function validateSessionToken(token: string): Promise<SessionValidationResult> {
 	const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
 
-  const row = await supabase.from('user_sessions').select().eq('user_id', sessionId).single()
 
-	if (row === null) {
+  const row = await supabase.from('user_sessions').select().eq('id', sessionId).single()
+
+	if (row === null || row.error) {
 		return { session: null, user: null };
 	}
 	const session: Session = {
@@ -40,15 +42,23 @@ export async function validateSessionToken(token: string): Promise<SessionValida
 		userId: row.data.user_id,
 		expiresAt: row.data.expires_at
 	};
+
+  const userRow = await supabase.from('users').select().eq('id', row.data.user_id).single();
+
+  if (userRow === null || userRow.error) {
+    return { session: null, user: null }
+  }
+
 	const user: User = {
-		id: row.data.user_id
+		id: row.data.user_id,
+    username: userRow.data.username,
 	};
-	if (Date.now() >= session.expiresAt.getTime()) {
+	if (Date.now() >= new Date(session.expiresAt).getTime()) {
     await supabase.from('user_sessions').delete().eq('id', sessionId);
 
 		return { session: null, user: null };
 	}
-	if (Date.now() >= session.expiresAt.getTime() - 1000 * 60 * 60 * 24 * 15) {
+	if (Date.now() >= new Date(session.expiresAt).getTime() - 1000 * 60 * 60 * 24 * 15) {
 		session.expiresAt = new Date(Date.now() + 1000 * 60 * 60 * 24 * 30);
 
     await supabase.from('user_sessions').update({ expires_at: session.expiresAt }).eq('id', session.id);
@@ -71,7 +81,7 @@ export function setSessionTokenCookie(event: RequestEvent, token: string, expire
 	event.cookies.set("session", token, {
 		httpOnly: true,
 		sameSite: "lax",
-		expires: expiresAt,
+		expires: new Date(expiresAt),
 		path: "/"
 	});
 }
@@ -98,4 +108,7 @@ export interface Session {
 
 export interface User {
 	id: number;
+  username: string;
+  email?: string;
+  password?: string;
 }
