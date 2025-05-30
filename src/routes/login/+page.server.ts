@@ -4,6 +4,7 @@ import { createSession, generateSessionToken, setSessionTokenCookie } from "$lib
 import { supabase } from "$lib/supabaseClient.js";
 
 export const load: PageServerLoad = async ({ locals }) => {
+  // If already logged in, redirect to dashboard
   if (locals.user) {
     redirect(303, '/dashboard')
   }
@@ -43,8 +44,5 @@ export const actions = {
 
     // send to dashboard
     redirect(303, '/dashboard');
-	},
-	register: async (event) => {
-		// TODO register the user
 	}
 } satisfies Actions
