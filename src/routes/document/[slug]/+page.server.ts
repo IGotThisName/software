@@ -1,29 +1,31 @@
 import { supabase } from '$lib/supabaseClient.js';
-import { redirect } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types.js';
 
 // get md from database
 export const load: PageServerLoad = async ({ locals, params }) => {
 
+  // check any user is logged in, if not go to login.
   if (locals.user === null) {
 		return redirect(308, "/login");
 	}
 
-  const { data, error } = await supabase.from("documents").select().eq('title', params.slug);
+  // get document from database
+  const { data: document, error: documentError } = await supabase.from("documents").select().eq('id', params.slug).single();
 
-  error ?? console.log(error);
+  // error checking
+  documentError ?? console.log(documentError);
 
-  if (data) {
-    const document = data[0];
+  // check for not null
+  if (document) {
 
-    return ({
-      title: document.title,
-      content: document.content,
-      user: locals.user
-    })
+    // check for user auth
+    if (locals.user.id !== document.user) {
+      error(401, {message: "User not authorised for this document!"})
+    }
+
+    return ({ document })
   }
-  
-  return ({ user: locals.user });
 }
 
 // upload markdown to database
@@ -31,12 +33,12 @@ export const actions = {
 	default: async ({ request }:{ request:Request }) => {
 		const formData = await request.formData();
     const md = formData.get('input');
-    const title = formData.get('title');
+    const id = formData.get('id');
 
     const { error } = await supabase
       .from('documents')
       .update({ content: md })
-      .eq('title', title)
+      .eq('id', id)
       .select();
 
     error ?? console.log(error);

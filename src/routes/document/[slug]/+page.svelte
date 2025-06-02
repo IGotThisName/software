@@ -6,14 +6,14 @@
 	import Markdown from 'svelte-exmarkdown';
 
   const props = $props();
-  const data = props.data
+  const document = props.data.document
 
-  let md = $state(data.content);
+  let md = $state(document.content);
 
 </script>
 
 <form method="POST" use:enhance={({ formData }) => {
-  formData.append('title', data.title);
+  formData.append('id', document.id);
 
   return async ({ result, update }) => {
     update({ reset: false })

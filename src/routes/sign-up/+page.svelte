@@ -1,7 +1,5 @@
 <script lang="ts">
-    import FormInput from "$lib/components/FormInput.svelte";
-
-
+  import FormInput from "$lib/components/FormInput.svelte";
 </script>
 
 <div class="w-screen h-screen flex justify-center items-center bg-slate-200">
