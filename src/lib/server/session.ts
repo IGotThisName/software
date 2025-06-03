@@ -68,12 +68,12 @@ export async function validateSessionToken(token: string): Promise<SessionValida
 
 // invalidate a single session
 export async function invalidateSession(sessionId: string): Promise<void> {
-  supabase.from('user_sessions').delete().eq('id', sessionId);
+  await supabase.from('user_sessions').delete().eq('id', sessionId);
 }
 
 // invalidate all of a users sessions
 export async function invalidateAllSessions(userId: number): Promise<void> {
-  supabase.from('user_sessions').delete().eq('user_id', userId);
+  await supabase.from('user_sessions').delete().eq('user_id', userId);
 }
 
 // set the session cookie on the browser

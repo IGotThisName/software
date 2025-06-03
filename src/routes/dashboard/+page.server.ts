@@ -2,6 +2,7 @@ import { supabase } from "$lib/supabaseClient.js";
 import { error, redirect, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types.js";
 import type { Document } from "$lib/types.js";
+import { deleteSessionTokenCookie, invalidateAllSessions } from "$lib/server/session.js";
 
 export const load: PageServerLoad = async ({ locals }) => {
   const user = locals.user;
@@ -20,13 +21,6 @@ export const load: PageServerLoad = async ({ locals }) => {
 
   if (data) {
     data.forEach((document) => {
-      // documents.push({
-      //   id: document.id,
-      //   title: document.title,
-      //   content: document.content,
-      //   user: document.user,
-      // });
-
       documents.push(document);
     })
   }
@@ -40,11 +34,26 @@ export const actions = {
 
     const { data: document, error: documentError } = await supabase.from('documents').insert({user: user?.id}).select().single();
 
-    if (document) {
-      redirect(308, '/document/' + document.id)
-    }
+    redirect(303, '/dashboard');
   },
   delete: async (event) => {
-    // TODO
+    const formData = await event.request.formData();
+    const docID = formData.get('id');
+
+    const { error } = await supabase.from('documents').delete().eq('id', docID);
+  },
+  logout: async (event) => {
+
+    if (!event.locals.user) return;
+
+    // invalidate sessions and delete cookies
+    await invalidateAllSessions(event.locals.user.id);
+    deleteSessionTokenCookie(event);
+
+    // remove user and session
+    event.locals.user = null;
+    event.locals.session = null;
+
+    redirect(303, '/login');
   }
 } satisfies Actions
