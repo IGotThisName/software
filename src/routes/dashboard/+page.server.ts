@@ -55,5 +55,12 @@ export const actions = {
     event.locals.session = null;
 
     redirect(303, '/login');
+  },
+  rename: async (event) => {
+    const formData = await event.request.formData();
+    const title = formData.get('title');
+    const id = formData.get('id');
+
+    await supabase.from('documents').update({title: title}).eq('id', id);
   }
 } satisfies Actions

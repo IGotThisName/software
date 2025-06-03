@@ -61,7 +61,15 @@
             <Markdown md={document.content} />
           </div>
         </div>
-        <p class="p-4 text-slate-800 font-semibold text-xl">{document.title}</p>
+        <form method="POST" action="?/rename" use:enhance={({ formData }) => {
+          formData.append('id', document.id);
+
+          return async ({ update }) => {
+            await update({ reset: false })
+          };
+        }}>
+          <input class="p-4 text-slate-800 font-semibold text-xl text-center focus:outline-none" value={document.title} name="title" />
+        </form>
       </button>
     {/each}
   </div>
