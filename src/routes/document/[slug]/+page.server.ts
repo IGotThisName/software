@@ -5,6 +5,15 @@ import type { PageServerLoad } from './$types.js';
 // get md from database
 export const load: PageServerLoad = async ({ locals, params }) => {
 
+  if (locals.disableDB) {
+    return ({ document: {
+      content: "# Test Content \nstuff\n- things",
+      title: "test document",
+      id: 0,
+      user: 0
+    }})
+  }
+
   // check any user is logged in, if not go to login.
   if (locals.user === null) {
 		return redirect(308, "/login");

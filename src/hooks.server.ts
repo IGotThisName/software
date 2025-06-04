@@ -3,6 +3,8 @@ import type { Handle } from "@sveltejs/kit";
 
 export const handle: Handle = async ({ event, resolve}) => {
 
+  event.locals.disableDB = false;
+
   // get and check the token
   const token = event.cookies.get('session') ?? null;
   if (token === null) {
