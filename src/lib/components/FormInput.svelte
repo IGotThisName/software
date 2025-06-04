@@ -9,8 +9,8 @@
   >{label}</label>
   <input 
     class="
-      w-2/3 bg-slate-100 rounded-sm p-1 shadow-sm 
-      focus:outline-none focus:shadow-lg focus:shadow-slate-300 transition-shadow
+      w-2/3 bg-slate-600 rounded-sm p-1 shadow-sm 
+      focus:outline-none focus:shadow-lg transition-shadow
     " 
     name='{name}' 
     type='{type}'

@@ -2,11 +2,11 @@
   import FormInput from "$lib/components/FormInput.svelte";
 </script>
 
-<div class="w-screen h-screen flex justify-center items-center bg-slate-200">
+<div class="w-screen h-screen flex justify-center items-center bg-slate-600">
   <form
   method="POST" 
   action="?/register"
-  class="flex flex-col p-4 min-w-lg shadow-lg rounded-lg bg-slate-50"
+  class="flex flex-col p-4 min-w-lg shadow-lg rounded-lg bg-slate-700 text-slate-100"
   >
     <h1 class="mb-4 text-xl text-center font-semibold">Sign Up</h1>
 
@@ -17,14 +17,14 @@
 
     <div class="flex flex-col">
       <button class="
-          mt-4 bg-gradient-to-r from-blue-100 to to-blue-200 rounded-lg p-2
-          shadow-lg font-semibold w-full
+          mt-4 bg-slate-800 rounded-lg p-2 cursor-pointer
+          shadow-lg font-semibold w-full hover:shadow-xl transition-all
         "
       >Sign Up</button>
       <a 
         class="
-          mt-4 bg-gradient-to-r from-slate-100 to to-blue-100 rounded-lg p-2
-          shadow-lg font-semibold w-full text-center
+          mt-4 bg-slate-800/80 rounded-lg p-2 hover:shadow-xl
+          shadow-lg font-semibold w-full text-center transition-all
         "
         href='/login'
       >Log in</a>
