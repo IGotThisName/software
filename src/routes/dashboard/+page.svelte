@@ -5,6 +5,8 @@
   const props = $props();
   const data = props.data;
 
+  let documents = $state(data.documents);
+
   let seldoc = $state(-1);
   let sel = $state(-1);
 
@@ -18,15 +20,20 @@
 
       return async ({ update }) => {
         await update()
-        location.reload();
+        //location.reload();
       };
     }}>
       <a class={buttonStyle} href={sel !== -1 ? '/document/' + seldoc : '/dashboard'} >Open</a>
-      <button class={buttonStyle} formaction="?/delete" >Delete</button>
-      <button class='{buttonStyle} group' formaction="?/create" >Create</button>
+      <button 
+        class={buttonStyle} 
+        formaction="?/delete" 
+        onclick={() => {
+          documents.splice(sel, 1);
+          sel = -1;
+        }}
+      >Delete</button>
+      <button class='{buttonStyle} group' formaction="?/create" onclick={() => location.reload()} >Create</button>
     </form>
-
-    
 
     <form 
       method="POST" action="?/logout"
@@ -42,7 +49,7 @@
   </div>
 
   <div class="flex w-5/6 h-screen p-12 gap-12 flex-wrap justify-start overflow-scroll">
-    {#each data.documents as document, i}
+    {#each documents as document, i}
       <button 
         onclick={() => {seldoc = document.id; sel = i}}
         class='
