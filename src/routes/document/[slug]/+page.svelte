@@ -41,12 +41,16 @@
     {/if}
 
     <div class="w-full h-12 flex">
+      <a 
+        href="/dashboard"
+        class="w-1/3 font-semibold bg-gray-700 transition-all hover:bg-gray-600 rounded-bl-xl flex justify-center items-center"
+      >Home</a>
       <button
-        class="w-1/2 font-semibold bg-gray-700 transition-all hover:bg-gray-600 rounded-bl-xl"
+        class="w-1/3 font-semibold bg-gray-700 transition-all hover:bg-gray-600 cursor-pointer"
         type="submit"
       >Save</button>
       <button
-        class="w-1/2 font-semibold bg-gray-700 transition-all hover:bg-gray-600 rounded-br-xl"
+        class="w-1/3 font-semibold bg-gray-700 transition-all hover:bg-gray-600 rounded-br-xl cursor-pointer"
         onclick={() => {edit = !edit}}
       >{edit ? "View" : "Edit"}</button>
     </div>
