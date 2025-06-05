@@ -52,7 +52,7 @@
           p-2 flex flex-col shadow-lg hover:shadow-xl/25
         '
       >
-        <div class="bg-slate-700 w-full h-5/6 rounded-lg overflow-hidden">
+        <div class="bg-slate-700/50 w-full h-5/6 rounded-lg overflow-hidden">
           <div class="prose prose-invert scale-50 origin-top p-4 overflow-hidden text-left">
             <Markdown md={document.content} />
           </div>
