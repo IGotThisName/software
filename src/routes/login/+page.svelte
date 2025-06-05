@@ -1,8 +1,7 @@
 <script lang="ts">
     import FormInput from "$lib/components/FormInput.svelte";
 
-  const props = $props();
-  const data = props.data;
+  const { data, form } = $props();
 </script>
 
 <div class="w-screen h-screen flex justify-center items-center bg-slate-600">
@@ -15,6 +14,12 @@
 
     <FormInput label="Email" name="email" type="email"/>
     <FormInput label="Password" name="password" type="password"/>
+
+    {#if form?.missing}
+      <p class="text-center text-red-300">email required</p>
+    {:else if form?.incorrect}
+      <p class="text-center text-red-300">email or password incorrect</p>
+    {/if}
 
     <div class="flex flex-col">
       <button class="

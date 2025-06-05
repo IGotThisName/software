@@ -3,6 +3,11 @@
   import { enhance } from "$app/forms";
   import Markdown from "svelte-exmarkdown";
 
+  // svg
+  import minus from '$lib/assets/minus.svg';
+  import plus from '$lib/assets/plus.svg';
+  import rightArrow from '$lib/assets/right-arrow.svg';
+
   const { data, form } = $props();
 
   let documents = $state(data.documents);
@@ -11,17 +16,16 @@
   let seldoc = $state(-1);
   let sel = $state(-1);
 
-  const buttonStyle = "text-center shadow-lg rounded-md inset-shadow-slate-600/50 inset-shadow-sm p-2 transition-all hover:shadow-xl/25 hover:my-4 cursor-pointer";
+  const buttonStyle = "text-center shadow-lg rounded-md inset-shadow-slate-600/50 inset-shadow-sm p-2 transition-all hover:shadow-xl/25 cursor-pointer size-12 flex justify-center items-center";
 </script>
 
 <div class="w-screen h-screen flex flex-row bg-slate-700">
-  <div class="h-screen w-1/6 bg-slate-800 rounded-r-xl flex flex-col justify-center text-white inset-shadow-sm/50 shadow-sm/50 relative">
+  <div class="h-screen bg-slate-800 rounded-r-xl flex flex-col justify-center text-white inset-shadow-sm/50 shadow-sm/50 relative">
     <form class="text-4xl p-6 gap-4 flex flex-col" action="?/create" method="POST" use:enhance={({ formData }) => {
       formData.append('id', seldoc.toString());
 
       return async ({ update }) => {
         await update()
-        //location.reload();
 
         documents.push({
           user: userID,
@@ -31,7 +35,7 @@
         });
       };
     }}>
-      <a class={buttonStyle} href={sel !== -1 ? '/document/' + seldoc : '/dashboard'} >Open</a>
+      <a class='{buttonStyle}' href={sel !== -1 ? '/document/' + seldoc : '/dashboard'} aria-label="open" ><img src={rightArrow} alt="open" /></a>
       <button 
         class={buttonStyle} 
         formaction="?/delete" 
@@ -39,8 +43,8 @@
           documents.splice(sel, 1);
           sel = -1;
         }}
-      >Delete</button>
-      <button class='{buttonStyle} group' formaction="?/create" >Create</button>
+      ><img src={minus} alt="delete" /></button>
+      <button class='{buttonStyle} group' formaction="?/create" ><img src={plus} alt="plus" /></button>
     </form>
 
     <form 
@@ -56,7 +60,7 @@
     </form>
   </div>
 
-  <div class="flex w-5/6 h-screen p-12 gap-12 flex-wrap justify-start overflow-scroll">
+  <div class="flex w-full h-screen p-12 gap-12 flex-wrap justify-center overflow-scroll">
     {#each documents as document, i}
       <button 
         onclick={() => {seldoc = document.id; sel = i}}
