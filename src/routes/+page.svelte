@@ -1,2 +1,3 @@
-<p>wowie what a website</p>
-<a href="/login">LOGIN</a>
+<div class="w-screen h-screen bg-slate-600">
+  
+</div>

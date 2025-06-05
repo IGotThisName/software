@@ -34,7 +34,7 @@ export const actions = {
 
     const { data: document, error: documentError } = await supabase.from('documents').insert({user: user?.id}).select().single();
 
-    redirect(303, '/dashboard');
+    // redirect(303, '/dashboard');
   },
   delete: async (event) => {
     const formData = await event.request.formData();

@@ -3,7 +3,7 @@
   import Markdown from "svelte-exmarkdown";
 
   const props = $props();
-  const data = props.data;
+  let data = props.data;
 
   let seldoc = $state(-1);
   let sel = $state(-1);
@@ -22,7 +22,13 @@
       };
     }}>
       <a class={buttonStyle} href={sel !== -1 ? '/document/' + seldoc : '/dashboard'} >Open</a>
-      <button class={buttonStyle} formaction="?/delete" >Delete</button>
+      <button 
+        class={buttonStyle} 
+        formaction="?/delete" 
+        onclick={() => {
+          data.documents.splice(sel, 1);
+        }}
+      >Delete</button>
       <button class='{buttonStyle} group' formaction="?/create" >Create</button>
     </form>
 
