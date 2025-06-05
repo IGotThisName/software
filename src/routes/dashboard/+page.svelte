@@ -1,11 +1,12 @@
 <script lang='ts'>
+  // @ts-nocheck
   import { enhance } from "$app/forms";
   import Markdown from "svelte-exmarkdown";
 
-  const props = $props();
-  const data = props.data;
+  const { data, form } = $props();
 
   let documents = $state(data.documents);
+  const userID = data.user.id;
 
   let seldoc = $state(-1);
   let sel = $state(-1);
@@ -21,6 +22,13 @@
       return async ({ update }) => {
         await update()
         //location.reload();
+
+        documents.push({
+          user: userID,
+          id: form.id,
+          title: "Document Title",
+          content: "",
+        });
       };
     }}>
       <a class={buttonStyle} href={sel !== -1 ? '/document/' + seldoc : '/dashboard'} >Open</a>
@@ -32,7 +40,7 @@
           sel = -1;
         }}
       >Delete</button>
-      <button class='{buttonStyle} group' formaction="?/create" onclick={() => location.reload()} >Create</button>
+      <button class='{buttonStyle} group' formaction="?/create" >Create</button>
     </form>
 
     <form 
@@ -65,7 +73,7 @@
           </div>
         </div>
         <form method="POST" action="?/rename" use:enhance={({ formData }) => {
-          formData.append('id', document.id);
+          formData.append('id', document.id.toString());
 
           return async ({ update }) => {
             await update({ reset: false })
